@@ -2,21 +2,22 @@ package robinsonade;
 
 import java.util.Objects;
 
-class Price {
+class Quantity {
+
     private final double value;
 
-    static Price valueOf(double value) { return new Price(value); }
+    static Quantity valueOf(double value) { return new Quantity(value); }
 
-    private Price(double value) { this.value = value; }
+    private Quantity(double value) { this.value = value; }
 
-    Price multiplyBy(Quantity quantity) { return valueOf(quantity.multiplyBy(value)); }
+    double multiplyBy(double value) { return this.value * value; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Price price = (Price) o;
-        return Double.compare(price.value, value) == 0;
+        Quantity quantity = (Quantity) o;
+        return Double.compare(quantity.value, value) == 0;
     }
 
     @Override
@@ -26,6 +27,6 @@ class Price {
 
     @Override
     public String toString() {
-        return "Price{ value=" + value + '}';
+        return "Quantity{" + "value=" + value + '}';
     }
 }
