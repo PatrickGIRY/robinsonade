@@ -26,11 +26,11 @@ public class PriceQueryTest {
                 "BANANA, 1.90"})
     @Test
     public void find_the_price_given_an_item_code(String itemCode, double unitPrice) {
-        assertThat(priceQuery.findPrice(itemCode)).isEqualTo(Price.valueOf(unitPrice));
+        assertThat(priceQuery.findPrice(itemCode)).isEqualTo(Result.found(Price.valueOf(unitPrice)));
     }
 
     @Test
     public void search_an_unknow_item() {
-        assertThat(priceQuery.findPrice("PEACH")).isNull();
+        assertThat(priceQuery.findPrice("PEACH")).isEqualTo(Result.notFound("PEACH"));
     }
 }
