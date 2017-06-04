@@ -182,4 +182,9 @@ Signature de la fonction total
             }
         }
     }
-    
+
+## Tester la recherche d'un prix d'un article qui n'existe pas
+
+    assertThat(priceQuery.findPrice("PEACH")).isNull();
+
+ 

@@ -28,4 +28,9 @@ public class PriceQueryTest {
     public void find_the_price_given_an_item_code(String itemCode, double unitPrice) {
         assertThat(priceQuery.findPrice(itemCode)).isEqualTo(Price.valueOf(unitPrice));
     }
+
+    @Test
+    public void search_an_unknow_item() {
+        assertThat(priceQuery.findPrice("PEACH")).isNull();
+    }
 }
