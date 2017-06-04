@@ -18,10 +18,10 @@ public class CashRegisterTest {
     @Test
     public void total_is_product_of_quantity_by_item_price() {
 
-        double price = 1.20;
+        Price price = Price.valueOf(1.20);
         double quantity = 1;
-        double total = cashRegister.total(price, quantity);
+        Price total = cashRegister.total(price, quantity);
 
-        assertThat(total).isEqualTo(1.20);
+        assertThat(total).isEqualTo(Price.valueOf(1.20));
     }
 }
