@@ -113,4 +113,16 @@ Signature de la fonction total
         }
     }
 
-    
+## Ajouter la fonctionnalité pour rechercher le prix d'un article en fonction de son code
+
+    @Test
+    public void find_the_price_given_an_item_code() {
+        assertThat(priceQuery.findPrice("APPLE")).isEqualTo(Price.valueOf(1.20));
+    }   
+
+    class PriceQuery {
+
+       Price findPrice(String itemCode) {
+            return Price.valueOf(1.20);
+       }
+    } 
