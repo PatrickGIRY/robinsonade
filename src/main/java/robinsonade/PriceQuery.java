@@ -2,7 +2,19 @@ package robinsonade;
 
 class PriceQuery {
 
-    Price findPrice(String itemCode) {
-        return Price.valueOf(1.20);
+    private final ItemReference[] itemReferences;
+
+    public PriceQuery(ItemReference... itemReferences) {
+        this.itemReferences = itemReferences;
+    }
+
+    Price findPrice(String soughtItemCode) {
+        for (ItemReference itemReference : itemReferences) {
+            if (itemReference.matchSoughtItemCode(soughtItemCode)) {
+                return itemReference.getUnitPrice();
+            }
+        }
+
+        return null;
     }
 }

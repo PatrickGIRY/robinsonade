@@ -126,3 +126,60 @@ Signature de la fonction total
             return Price.valueOf(1.20);
        }
     } 
+
+## Tester la recherche du prix de plusieurs articles
+
+    @Parameters({"APPLE, 1.20",
+                "BANANA, 1.90"})
+    @Test
+    public void find_the_price_given_an_item_code(String itemCode, double unitPrice) {
+        assertThat(priceQuery.findPrice(itemCode)).isEqualTo(Price.valueOf(unitPrice));
+    }
+
+    priceQuery = new PriceQuery(
+                aReference().withItemCode("APPLE").withUnitPrice(1.20).build(),
+                aReference().withItemCode("BANANA").withUnitPrice(1.90).build());
+
+    class ItemReference {
+        private final String itemCode;
+        private final Price unitPrice;
+
+        static Builder aReference() { return new Builder(); }
+
+        private ItemReference(String itemCode, Price unitPrice) {
+            this.itemCode = itemCode;
+            this.unitPrice = unitPrice;
+        }
+
+        boolean matchSoughtItemCode(String soughtItemCode) {
+            return Objects.equals(itemCode, soughtItemCode);
+        }
+
+        Price getUnitPrice() { return unitPrice; }
+
+        static final class Builder {
+            private String itemCode;
+            private Price unitPrice;
+
+            private Builder() {}
+
+            Builder withItemCode(String itemCode) {
+                this.itemCode = itemCode;
+                return this;
+            }
+
+            Builder withUnitPrice(double unitPrice) {
+                return withUnitPrice(Price.valueOf(unitPrice));
+            }
+
+            Builder withUnitPrice(Price unitPrice) {
+                this.unitPrice = unitPrice;
+                return this;
+            }
+
+            ItemReference build() {
+                return new ItemReference(itemCode, unitPrice);
+            }
+        }
+    }
+    
