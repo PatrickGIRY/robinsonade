@@ -1,15 +1,14 @@
 package robinsonade;
 
 import java.util.Objects;
+import java.util.function.UnaryOperator;
 
 abstract class Result {
-    static Result found(Price price) {
-        return new Found(price);
-    }
+    static Result found(Price price) { return new Found(price); }
 
-    static Result notFound(String invalidItemCode) {
-        return new NotFound(invalidItemCode);
-    }
+    static Result notFound(String invalidItemCode) { return new NotFound(invalidItemCode); }
+
+    abstract Result map(UnaryOperator<Price> f);
 
     private static class Found extends Result {
         private final Price price;
@@ -17,6 +16,11 @@ abstract class Result {
         private Found(Price price) {
             super();
             this.price = price;
+        }
+
+        @Override
+        Result map(UnaryOperator<Price> f) {
+            return found(f.apply(price));
         }
 
         @Override
@@ -46,6 +50,11 @@ abstract class Result {
         private NotFound(String invalidItemCode) {
             super();
             this.invalidItemCode = invalidItemCode;
+        }
+
+        @Override
+        Result map(UnaryOperator<Price> f) {
+            return this;
         }
 
         @Override

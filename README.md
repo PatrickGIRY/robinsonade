@@ -187,7 +187,7 @@ Signature de la fonction total
 
     assertThat(priceQuery.findPrice("PEACH")).isNull();
 
-## Ajouter un type `Result` pour indiquer le prix de l'article est trouvé ou pas
+## Ajouter un type `Result` pour indiquer si le prix de l'article est trouvé ou pas
 
     assertThat(priceQuery.findPrice(itemCode)).isEqualTo(Result.found(Price.valueOf(unitPrice)));
 
@@ -221,9 +221,7 @@ Signature de la fonction total
 
             @Override
             public String toString() {
-                return "Found{" +
-                        "price=" + price +
-                        "} " + super.toString();
+                return "Found{price=" + price + '}';
             }
         }
 
@@ -250,9 +248,65 @@ Signature de la fonction total
 
             @Override
             public String toString() {
-                return "NotFound{" +
-                        "invalidItemCode='" + invalidItemCode + '\'' +
-                        "} " + super.toString();
+                return "NotFound{invalidItemCode='" + invalidItemCode + "\'}";
             }
+        }
+    }
+
+## Ajouter une fonction qui à partir du code de l'article et la quantité calcule le total si l'article existe
+
+    @Parameters({"APPLE, 1, 1.20",
+            "APPLE, 2, 1.20",
+            "BANANA, 10, 1.90"})
+    @Test
+    public void total_is_product_of_quantity_by_item_price_corresponding_to_existing_item_code(
+            String itemCode, double quantity, double unitPrice) {
+
+        Result total = cashRegister.total(priceQuery.findPrice(itemCode), Quantity.valueOf(quantity));
+
+        assertThat(total).isEqualTo(Result.found(Price.valueOf(quantity * unitPrice)));
+    }
+   
+    Result total = cashRegister.total(priceQuery.findPrice("PEACH"), Quantity.valueOf(1));
+
+    assertThat(total).isEqualTo(Result.notFound("PEACH"));
+
+    Result total(Result result, Quantity quantity) {
+        return  result.map(price -> price.multiplyBy(quantity));
+    }
+
+    abstract class Result {
+        static Result found(Price price) { return new Found(price); }
+
+        static Result notFound(String invalidItemCode) { return new NotFound(invalidItemCode); }
+
+        abstract Result map(UnaryOperator<Price> f);
+
+        private static class Found extends Result {
+            private final Price price;
+
+            private Found(Price price) {
+                super();
+                this.price = price;
+            }
+
+            @Override
+            Result map(UnaryOperator<Price> f) { return found(f.apply(price)); }
+
+            ...
+        }
+
+        private static class NotFound extends Result {
+            private final String invalidItemCode;
+
+            private NotFound(String invalidItemCode) {
+                super();
+                this.invalidItemCode = invalidItemCode;
+            }
+
+            @Override
+            Result map(UnaryOperator<Price> f) { return this; }
+
+            ...
         }
     }
