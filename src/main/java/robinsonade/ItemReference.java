@@ -21,6 +21,28 @@ class ItemReference {
 
     Price getUnitPrice() { return unitPrice; }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemReference that = (ItemReference) o;
+        return Objects.equals(itemCode, that.itemCode) &&
+                Objects.equals(unitPrice, that.unitPrice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemCode, unitPrice);
+    }
+
+    @Override
+    public String toString() {
+        return "ItemReference{" +
+                "itemCode='" + itemCode + '\'' +
+                ", unitPrice=" + unitPrice +
+                '}';
+    }
+
     static final class Builder {
         private String itemCode;
         private Price unitPrice;
