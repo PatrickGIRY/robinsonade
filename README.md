@@ -20,7 +20,7 @@ Signature de la fonction total
         return  price * quantity;
     }
 
-## Ajouter un ValueType poue le prix
+## Ajouter un ValueType pour le prix
 
     Price price = Price.valueOf(1.20);
     double quantity = 1;
