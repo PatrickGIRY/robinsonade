@@ -15,8 +15,8 @@ class PriceQuery {
         return Stream.of(itemReferences)
                 .filter(r -> r.matchSoughtItemCode(soughtItemCode))
                 .map(ItemReference::getUnitPrice)
-                .findFirst()
                 .map(Result::found)
+                .findFirst()
                 .orElseGet(() -> Result.notFound(soughtItemCode));
     }
 
