@@ -34,6 +34,8 @@ public class CashRegisterTest {
         Result total = cashRegister.total(priceQuery.findPrice(itemCode), Quantity.valueOf(quantity));
 
         assertThat(total).isEqualTo(Result.found(Price.valueOf(quantity * unitPrice)));
+
+        total.ifFound(System.out::println);
     }
 
     @Test
@@ -42,5 +44,7 @@ public class CashRegisterTest {
         Result total = cashRegister.total(priceQuery.findPrice("PEACH"), Quantity.valueOf(1));
 
         assertThat(total).isEqualTo(Result.notFound("PEACH"));
+
+        total.ifNotFound(System.err::println);
     }
 }

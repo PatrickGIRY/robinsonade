@@ -1,6 +1,7 @@
 package robinsonade;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 abstract class Result {
@@ -9,6 +10,9 @@ abstract class Result {
     static Result notFound(String invalidItemCode) { return new NotFound(invalidItemCode); }
 
     abstract Result map(UnaryOperator<Price> f);
+
+    abstract void ifFound(Consumer<Price> consumer);
+    abstract void ifNotFound(Consumer<String> consumer);
 
     private static class Found extends Result {
         private final Price price;
@@ -21,6 +25,15 @@ abstract class Result {
         @Override
         Result map(UnaryOperator<Price> f) {
             return found(f.apply(price));
+        }
+
+        @Override
+        void ifFound(Consumer<Price> consumer) {
+            consumer.accept(price);
+        }
+
+        @Override
+        void ifNotFound(Consumer<String> consumer) {
         }
 
         @Override
@@ -55,6 +68,16 @@ abstract class Result {
         @Override
         Result map(UnaryOperator<Price> f) {
             return this;
+        }
+
+        @Override
+        void ifFound(Consumer<Price> consumer) {
+
+        }
+
+        @Override
+        void ifNotFound(Consumer<String> consumer) {
+            consumer.accept(invalidItemCode);
         }
 
         @Override
