@@ -19,6 +19,8 @@ class ItemReference {
         return Objects.equals(itemCode, soughtItemCode);
     }
 
+    String getItemCode() { return itemCode; }
+
     Price getUnitPrice() { return unitPrice; }
 
     @Override
