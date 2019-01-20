@@ -4,9 +4,24 @@ namespace Robinsonade
 {
     public class PriceQuery
     {
-        public Price FindPrice(String itemCode)
+        private readonly ItemReference[] itemReferences;
+
+        public PriceQuery(params ItemReference[] itemReferences)
         {
-            return Price.ValueOf(1.20);
+            this.itemReferences = itemReferences;
+        }
+
+        public Price FindPrice(String soughtItemCode)
+        {
+            foreach (var itemReference in itemReferences)
+            {
+                if (itemReference.matchSoughtItemCode(soughtItemCode))
+                {
+                    return itemReference.getUnitPrice();
+                }
+            }
+            
+            return null;
         }
     }
 }

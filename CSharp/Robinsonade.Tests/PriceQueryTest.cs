@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NFluent;
 
 namespace Robinsonade.Tests
@@ -11,13 +12,17 @@ namespace Robinsonade.Tests
         [TestInitialize]
         public void Initialize()
         {
-            priceQuery = new PriceQuery();
+            priceQuery = new PriceQuery(
+                ItemReference.aReference().withItemCode("APPLE").withUnitPrice(1.20).build(),
+                ItemReference.aReference().withItemCode("BANANA").withUnitPrice(1.90).build());
         }
 
-        [TestMethod]
-        public void find_the_price_given_an_item_code()
+        [DataTestMethod]
+        [DataRow("APPLE", 1.20)]
+        [DataRow("BANANA", 1.90)]
+        public void find_the_price_given_an_item_code(String itemCode, double unitPrice)
         {
-            Check.That(priceQuery.FindPrice("APPLE")).IsEqualTo(Price.ValueOf(1.20));
+            Check.That(priceQuery.FindPrice(itemCode)).IsEqualTo(Price.ValueOf(unitPrice));
         }
     }
 }
