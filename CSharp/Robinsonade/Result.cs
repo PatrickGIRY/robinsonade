@@ -17,7 +17,7 @@ namespace Robinsonade
         public abstract Result Map(Func<Price, Price> func);
     }
 
-    internal class Found : Result
+    internal sealed class Found : Result
     {
         private readonly Price price;
 
@@ -61,7 +61,7 @@ namespace Robinsonade
         }
     }
 
-    internal class NotFound : Result
+    internal sealed class NotFound : Result
     {
         private readonly string invalidItemCode;
 
