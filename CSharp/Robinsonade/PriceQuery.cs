@@ -1,23 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Robinsonade
 {
     public class PriceQuery
     {
-        private readonly ItemReference[] itemReferences;
+        private readonly Dictionary<String, Price> itemReferences;
 
         public PriceQuery(params ItemReference[] itemReferences)
         {
-            this.itemReferences = itemReferences;
+            this.itemReferences = itemReferences.ToDictionary(i=> i.ItemCode, i=> i.GetUnitPrice());
         }
 
         public Result FindPrice(String soughtItemCode)
         {
-            var enumerable = itemReferences.Where(r => r.matchSoughtItemCode(soughtItemCode));
-            Result result = enumerable.Any()
-                ? Result.Found(enumerable.Select(i => i.GetUnitPrice()).First())
-                : Result.NotFound(soughtItemCode);
+            var item = itemReferences.GetValueOrDefault(soughtItemCode);
+            var result = item == null
+                ? Result.NotFound(soughtItemCode)
+                : Result.Found(item);
 
             return result;
         }

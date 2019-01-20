@@ -7,6 +7,8 @@ namespace Robinsonade
         private readonly String itemCode;
         private readonly Price unitPrice;
 
+        public string ItemCode => itemCode;
+
         public static Builder aReference()
         {
             return new Builder();
