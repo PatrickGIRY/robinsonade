@@ -24,5 +24,11 @@ namespace Robinsonade.Tests
         {
             Check.That(priceQuery.FindPrice(itemCode)).IsEqualTo(Price.ValueOf(unitPrice));
         }
+
+        [TestMethod]
+        public void search_an_unknow_item()
+        {
+            Check.That(priceQuery.FindPrice("PEACH")).IsNull();
+        }
     }
 }
