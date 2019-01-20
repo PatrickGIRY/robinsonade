@@ -15,20 +15,28 @@ namespace Robinsonade
         public Result FindPrice(String soughtItemCode)
         {
             return Reduce(Result.NotFound(soughtItemCode),
-                (result, itemReference) =>
-                {
-                    if (itemReference.matchSoughtItemCode(soughtItemCode))
-                    {
-                        return Result.Found(itemReference.getUnitPrice());
-                    }
-                    return result;
-                },
-                itemReferences);
+                (result, itemReference)=>Result.Found(itemReference.GetUnitPrice()),
+                Filter(itemReference=>itemReference.matchSoughtItemCode(soughtItemCode),
+                    itemReferences));
         }
 
-        static R Reduce<T, R>(R identity, Func<R, T, R> reducer, IEnumerable<T> values)
+        private static List<T> Filter<T>(Func<T, bool> predicate, IEnumerable<T> values)
         {
-            R result = identity;
+            return Reduce(new List<T>(),
+                (accumulator, value) => predicate(value)
+                    ? Append(accumulator, value)
+                    : accumulator, values);
+        }
+
+        private static T Append<T, TR>(T accumulator, TR value) where T : List<TR>
+        {
+            accumulator.Add(value);
+            return accumulator;
+        }
+
+        static TR Reduce<T, TR>(TR identity, Func<TR, T, TR> reducer, IEnumerable<T> values)
+        {
+            var result = identity;
             foreach (var value in values)
             {
                 result = reducer(result, value);

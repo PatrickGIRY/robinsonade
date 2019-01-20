@@ -23,7 +23,7 @@ namespace Robinsonade
             return itemCode.Equals(soughtItemCode);
         }
 
-        public Price getUnitPrice()
+        public Price GetUnitPrice()
         {
             return unitPrice;
         }
