@@ -2,9 +2,9 @@
 {
     public class CashRegister
     {
-        public Price Total(Price price, Quantity quantity)
+        public Result Total(Result result, Quantity quantity)
         {
-            return price.MultiplyBy(quantity);
+            return result.Map(price => price.MultiplyBy(quantity));
         }
     }
 }

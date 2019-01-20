@@ -13,6 +13,8 @@ namespace Robinsonade
         {
             return new NotFound(invalidItemCode);
         }
+
+        public abstract Result Map(Func<Price, Price> func);
     }
 
     internal class Found : Result
@@ -52,11 +54,16 @@ namespace Robinsonade
         {
             return price.GetHashCode();
         }
+
+        public override Result Map(Func<Price, Price> func)
+        {
+            return Found(func(price));
+        }
     }
 
     internal class NotFound : Result
     {
-        private readonly String invalidItemCode;
+        private readonly string invalidItemCode;
 
         public NotFound(string invalidItemCode)
             : base()
@@ -90,6 +97,11 @@ namespace Robinsonade
         public override int GetHashCode()
         {
             return invalidItemCode.GetHashCode();
+        }
+
+        public override Result Map(Func<Price, Price> func)
+        {
+            return this;
         }
     }
 
