@@ -22,13 +22,13 @@ namespace Robinsonade.Tests
         [DataRow("BANANA", 1.90)]
         public void find_the_price_given_an_item_code(String itemCode, double unitPrice)
         {
-            Check.That(priceQuery.FindPrice(itemCode)).IsEqualTo(Price.ValueOf(unitPrice));
+            Check.That(priceQuery.FindPrice(itemCode)).IsEqualTo(Result.Found(Price.ValueOf(unitPrice)));
         }
 
         [TestMethod]
         public void search_an_unknow_item()
         {
-            Check.That(priceQuery.FindPrice("PEACH")).IsNull();
+            Check.That(priceQuery.FindPrice("PEACH")).IsEqualTo(Result.NotFound("PEACH"));
         }
     }
 }

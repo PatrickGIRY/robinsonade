@@ -11,17 +11,17 @@ namespace Robinsonade
             this.itemReferences = itemReferences;
         }
 
-        public Price FindPrice(String soughtItemCode)
+        public Result FindPrice(String soughtItemCode)
         {
             foreach (var itemReference in itemReferences)
             {
                 if (itemReference.matchSoughtItemCode(soughtItemCode))
                 {
-                    return itemReference.getUnitPrice();
+                    return Result.Found(itemReference.getUnitPrice());
                 }
             }
-            
-            return null;
+
+            return Result.NotFound(soughtItemCode);
         }
     }
 }
