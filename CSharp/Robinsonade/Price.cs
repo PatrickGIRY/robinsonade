@@ -8,9 +8,9 @@
 
         private Price(double value) { this.value = value; }
 
-        public Price MultiplyBy(double quantity)
+        public Price MultiplyBy(Quantity quantity)
         {
-            return ValueOf(value * quantity);
+            return ValueOf(quantity.MultiplyBy(value));
         }
 
         public override bool Equals(object obj)

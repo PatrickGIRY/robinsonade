@@ -18,7 +18,7 @@ namespace Robinsonade.Tests
         public void total_is_product_of_quantity_by_item_price()
         {
             Price price = Price.ValueOf(1.20);
-            double quantity = 1;
+            Quantity quantity = Quantity.ValueOf(1);
             Price total = cashRegister.Total(price, quantity);
             Check.That(total).IsEqualTo(Price.ValueOf(1.20));
         }
