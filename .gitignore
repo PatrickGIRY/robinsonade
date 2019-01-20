@@ -2,3 +2,6 @@ target
 .idea
 *.iml
 *.swp
+/CSharp/.vs/
+/CSharp/*/bin/
+/CSharp/*/obj/
