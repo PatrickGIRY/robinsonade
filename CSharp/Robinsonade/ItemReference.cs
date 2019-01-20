@@ -28,6 +28,37 @@ namespace Robinsonade
             return unitPrice;
         }
 
+        public override bool Equals(object obj)
+        {
+            if (this == obj)
+            {
+                return true;
+            }
+
+            if (obj == null || this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            ItemReference that = (ItemReference)obj;
+            return itemCode.Equals(that.itemCode) &&
+                   unitPrice.Equals(that.unitPrice);
+        }
+
+        public override string ToString()
+        {
+            return "ItemReference{" +
+                   "itemCode='" + itemCode + '\'' +
+                   ", unitPrice=" + unitPrice +
+                   '}';
+        }
+
+        public override int GetHashCode()
+        {
+            return itemCode.GetHashCode()
+                   + unitPrice.GetHashCode();
+        }
+
         public class Builder
         {
             private String itemCode;

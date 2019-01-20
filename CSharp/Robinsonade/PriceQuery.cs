@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Robinsonade
 {
@@ -13,15 +14,26 @@ namespace Robinsonade
 
         public Result FindPrice(String soughtItemCode)
         {
-            foreach (var itemReference in itemReferences)
-            {
-                if (itemReference.matchSoughtItemCode(soughtItemCode))
+            return Reduce(Result.NotFound(soughtItemCode),
+                (result, itemReference) =>
                 {
-                    return Result.Found(itemReference.getUnitPrice());
-                }
-            }
+                    if (itemReference.matchSoughtItemCode(soughtItemCode))
+                    {
+                        return Result.Found(itemReference.getUnitPrice());
+                    }
+                    return result;
+                },
+                itemReferences);
+        }
 
-            return Result.NotFound(soughtItemCode);
+        static R Reduce<T, R>(R identity, Func<R, T, R> reducer, IEnumerable<T> values)
+        {
+            R result = identity;
+            foreach (var value in values)
+            {
+                result = reducer(result, value);
+            }
+            return result;
         }
     }
 }
